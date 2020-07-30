@@ -1,42 +1,42 @@
+// Node modules
 const express = require("express");
 const http = require("http");
+
+// 3rd party modules
 const morgan = require("morgan");
 
+// Dishes
 const dishRouter = require("./routes/dishRouter");
 
+// Promotions
+const promoRouter = require("./routes/promoRouter");
+
+// Leaders
+const leaderRouter = require("./routes/leaderRouter");
+
+// hostname & port
 const hostname = "localhost";
 const port = 3000;
 
 const app = express();
+
+// Middleware
 app.use(morgan("dev"));
 app.use(express.json());
 
+// Middleware for Dishes
 app.use("/dishes", dishRouter);
+app.use("/dishes/:dishId", dishRouter);
 
-// app.get("/dishes/:dishId", (req, res, next) => {
-//   res.send("Will send details of the dish: " + req.params.dishId + " to you!");
-// });
+//  Middleware for Promotions
+app.use("/promotions", promoRouter);
+app.use("/promotions/:promoId", promoRouter);
 
-// app.post("/dishes/:dishId", (req, res, next) => {
-//   res
-//     .status(403)
-//     .send("POST operation is not supported on /dishes/" + req.params.dishId);
-// });
+//  Middleware for Leaders
+app.use("/leadership", leaderRouter);
+app.use("/leaders/:leaderId", leaderRouter);
 
-// app.put("/dishes/:dishId", (req, res, next) => {
-//   res.write("Updating the dish: " + req.params.dishId + "\n");
-//   res.end(
-//     "Will update the dish: " +
-//       req.body.name +
-//       "with details: " +
-//       req.body.description
-//   );
-// });
-
-// app.delete("/dishes/:dishId", (req, res, next) => {
-//   res.send("Deleting the dish: " + req.params.dishId);
-// });
-
+// static folder
 app.use(express.static(__dirname + "/public"));
 
 app.use((req, res, next) => {
@@ -45,6 +45,7 @@ app.use((req, res, next) => {
   res.end("<html><body><h1>This is an Express Server</h1></body></html>");
 });
 
+// creating server
 const server = http.createServer(app);
 
 server.listen(port, hostname, () => {

@@ -29,4 +29,29 @@ dishRouter
     res.send("Deleting all the dishes!");
   });
 
+dishRouter
+  .route("/:dishId")
+  .get((req, res, next) => {
+    res.send(
+      "Will send details of the dish: " + req.params.dishId + " to you!"
+    );
+  })
+  .post((req, res, next) => {
+    res
+      .status(403)
+      .send("POST operation is not supported on /dishes/" + req.params.dishId);
+  })
+  .put((req, res, next) => {
+    res.write("Updating the dish: " + req.params.dishId + "\n");
+    res.end(
+      "Will update the dish: " +
+        req.body.name +
+        " with details: " +
+        req.body.description
+    );
+  })
+  .delete((req, res, next) => {
+    res.send("Deleting the dish: " + req.params.dishId);
+  });
+
 module.exports = dishRouter;
